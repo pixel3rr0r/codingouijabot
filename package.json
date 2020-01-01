@@ -1,0 +1,23 @@
+{
+  "name": "codingouijabot",
+  "version": "1.0.0",
+  "description": "Bot for the r/codingouija subreddit",
+  "main": "app.js",
+  "scripts": {
+    "run": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HMStith/codingouijabot.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HMStith/codingouijabot/issues"
+  },
+  "homepage": "https://github.com/HMStith/codingouijabot#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "snoowrap": "^1.20.1"
+  }
+}
