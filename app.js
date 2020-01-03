@@ -1,11 +1,20 @@
 require('dotenv').config();
 
+// Requires
 const snoowrap = require('snoowrap');
 
-const r = new snoowrap({
-    userAgent: process.env.USER_AGENT,
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    refreshToken: process.env.REFRESH_TOKEN
-});
+// Config
+const config = {
+    client_id: process.env.CLIENT_ID,
+    client_secret: process.env.CLIENT_SECRET,
+    username: process.env.USERNAME,
+    password: process.env.PASSWORD,
+    user_agent: 'CodeOuijaBot'
+};
 
+// Variables
+const SUBREDDIT_NAME = "test",
+      COMMENT_SCORE_THRESHOLD = process.env.THRESHOLD;
+
+var r = new snoowrap(config),
+    closingRegex = /^\:wq/gi
