@@ -1,20 +1,40 @@
-require('dotenv').config();
+'use strict';
 
-// Requires
+// ------------- includes ------------------
 const snoowrap = require('snoowrap');
+require('dotenv').config({path: __dirname + '/.env'})
 
-// Config
-const config = {
-    client_id: process.env.CLIENT_ID,
-    client_secret: process.env.CLIENT_SECRET,
-    username: process.env.USERNAME,
-    password: process.env.PASSWORD,
-    user_agent: 'CodeOuijaBot'
+// -------------- config -------------------
+const cfg = {
+	client_id: process.env.CLIENT_ID,
+	client_secret: process.env.CLIENT_SECRET,
+	username: process.env.USER,
+	password: process.env.PASSWORD,
+	user_agent: 'CodingOuijaBot'
 };
 
-// Variables
-const SUBREDDIT_NAME = "test",
-      COMMENT_SCORE_THRESHOLD = process.env.THRESHOLD;
+// console.log(cfg)
 
-var r = new snoowrap(config),
-    closingRegex = /^\:wq/gi
+const
+	EOL = require('os').EOL,
+	SUBREDDIT_NAME = 'test'
+
+var
+	r = new snoowrap(cfg),
+	submissionId = "eikhla"
+
+r.getSubmission('eikhla').expandReplies({limit: Infinity, depth: Infinity}).then(c => {
+    c.comments.forEach(x => {
+        console.log(x.body)
+		getAllReplies(x)
+    })
+})
+
+function getAllReplies(c) {
+	if (c.replies.length != 0) {
+		c.replies.forEach(r => {
+			console.log(r.body)
+			getAllReplies(r)
+		})
+	}
+}
