@@ -2,7 +2,7 @@
 
 // ------------- includes ------------------
 const snoowrap = require('snoowrap');
-require('dotenv').config(); //Path is useless if it is in the base directory, which it will be.
+require('dotenv').config();
 
 /* -------------- config -------------------
 
@@ -24,33 +24,44 @@ const cfg = {
 
 const
 	EOL = require('os').EOL,
-	SUBREDDIT_NAME = 'test'
+	SUBREDDIT_NAME = 'codingouija';
 
-var
-	r = new snoowrap(cfg),
-	submissionId = "eikhla"
+var	r = new snoowrap(cfg);
 
 // ------------- functions -----------------
 
 function getTopReply(sid) {
-    // Using my own post as for now, regular check of new posts will be added later.
     var submission = r.getSubmission(sid)
     submission.expandReplies({limit: Infinity, depth: Infinity}).then(comment => {
-        comment.comments.forEach(c => {
-            console.log(getReplyChain(c).join('\n\n'))
-        })
+        console.log(getReplyChain(comment.comments[0]))
     })
 }
 
 function getReplyChain(c) {
-    var replies = [c.body]
-    var currComment = c
+    var replies = [c.body.trim()],
+        currComment = c;
+
     while (currComment.replies.length != 0) {
-        replies.push(currComment.replies[0].body)
-        currComment =  currComment.replies[0]
+
+        if (currComment.replies[0].body.includes(':wq')) { break }
+
+        replies.push(currComment.replies[0].body.trim());
+        currComment =  currComment.replies[0];
     }
-    console.log(replies)
+
     return replies
 }
 
-getTopReply(submissionId)
+function runBot() {
+    var hot = r.getSubreddit(SUBREDDIT_NAME).getHot().then(listing => {
+        listing.forEach(submission => {
+            if (["Meta", "Python", null].indexOf(submission.link_flair_text) == -1 && submission.num_comments > 2) {
+                getTopReply(submission)
+            }
+        });
+
+    })
+}
+runBot()
+//  RUN BOT
+//setInterval(runBot, 1800000);
