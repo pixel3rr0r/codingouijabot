@@ -52,16 +52,34 @@ function getReplyChain(c) {
     return replies
 }
 
+function isWq(s) {
+    var submission = r.getSubmission(s),
+        found = false
+    submission.expandReplies().then(comment => {
+        comment.comments.forEach(c => {
+            //if (getReplyChain(c).includes(':wq')) {return true}
+            var replyChain = getReplyChain(c)
+            if (replyChain.includes(':wq')) {
+                found = true
+            }
+            console.log(found) // For some reason, found will log to be true, but not change the value
+        })
+    })
+    return found
+}
+
 function runBot() {
     var hot = r.getSubreddit(SUBREDDIT_NAME).getHot().then(listing => {
         listing.forEach(submission => {
             if (["Meta", "Python", null].indexOf(submission.link_flair_text) == -1 && submission.num_comments > 2) {
-                getTopReply(submission)
             }
+            console.log(isWq(submission))
         });
 
     })
 }
+
 runBot()
-//  RUN BOT
+
+// RUN BOT
 //setInterval(runBot, 1800000);
