@@ -53,19 +53,18 @@ function getReplyChain(c) {
 }
 
 function isWq(s) {
-    var submission = r.getSubmission(s),
-        found = false
+    var submission = r.getSubmission(s)
     submission.expandReplies().then(comment => {
-        comment.comments.forEach(c => {
+        comment.comments.some(c => {
             //if (getReplyChain(c).includes(':wq')) {return true}
             var replyChain = getReplyChain(c)
             if (replyChain.includes(':wq')) {
-                found = true
+                return true
             }
-            console.log(found) // For some reason, found will log to be true, but not change the value
+            //console.log(found) // For some reason, found will log to be true, but not change the value
         })
     })
-    return found
+    return false
 }
 
 function runBot() {
